@@ -42,13 +42,7 @@ namespace DotNetCacheManagement.Controllers
 
             if (!_memoryCache.TryGetValue(cacheKey, out IEnumerable<WeatherForecast> forecast))
             {
-                forecast = Enumerable.Range(1, 5).Select(index => new WeatherForecast
-                {
-                    Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    TemperatureC = Random.Shared.Next(-20, 55),
-                    Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-                }).Take(2)
-                .ToArray();
+                forecast = GenerateWeatherForecastData(2);
 
                 var cacheOptions = new MemoryCacheEntryOptions()
                 {
@@ -63,13 +57,7 @@ namespace DotNetCacheManagement.Controllers
 
 
 
-            var weather2 = Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            }).Take(2)
-            .ToArray();
+            var weather2 = GenerateWeatherForecastData(2);
 
             var result = new WeatherForecastsDto
             {
@@ -78,6 +66,20 @@ namespace DotNetCacheManagement.Controllers
             };
 
             return Ok(result);
+        }
+
+
+        private IEnumerable<WeatherForecast> GenerateWeatherForecastData(int count)
+        {
+            var forecast = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            {
+                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+                TemperatureC = Random.Shared.Next(-20, 55),
+                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+            }).Take(count)
+                .ToArray();
+
+            return forecast;
         }
 
 
