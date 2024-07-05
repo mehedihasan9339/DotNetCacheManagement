@@ -52,7 +52,9 @@ namespace DotNetCacheManagement.Controllers
 
                 var cacheOptions = new MemoryCacheEntryOptions()
                 {
+                    // Set the absolute expiration time for the cached data (20 seconds from now)
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(20),
+                    // Set the sliding expiration for the cached data (remove if not accessed for 10 seconds)
                     SlidingExpiration = TimeSpan.FromSeconds(10)
                 };
 
